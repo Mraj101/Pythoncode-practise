@@ -18,3 +18,5 @@ if age>=18:
     print("yes")
 else:
     print("no")
+
+#added a comment
