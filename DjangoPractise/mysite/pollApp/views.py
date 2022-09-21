@@ -1,7 +1,28 @@
 from urllib import request
 from django.shortcuts import render
 from django.http import HttpRequest,HttpResponse
+from django.template import loader
 # Create your views here.
+
+
+from .models import Question
+
+
 def index(request):
-    return  HttpResponse("Hello this is my first app")
-   
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    template=loader.get_template("pollApp/index.html")
+    context={
+        'latest_question_list':latest_question_list
+    }
+    return HttpResponse(template.render(context,request))
+
+# Leave the rest of the views (detail, results, vote) unchanged
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
